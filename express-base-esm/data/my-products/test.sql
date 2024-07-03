@@ -49,6 +49,6 @@ WHERE brand IN ('Apple', 'Google')
 LIMIT 5 OFFSET 5;
 
 -- 額外需要: 計算在此條件(WHERE從句條件)下，總共有多少筆資料結果(回傳到前端，要呈現有多少頁)
-SELECT COUNT(*) AS COUNT
+SELECT COUNT(*) AS count
 FROM `my_product`
 WHERE brand IN ('Apple', 'Google');
