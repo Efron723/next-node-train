@@ -24,31 +24,25 @@ export default function Detail() {
 
   // 與伺服器作fetch獲得資料(建議寫在useEffect上面與外面比較容易維護管理)
   const getProduct = async (pid) => {
-    const url =
-      'https://my-json-server.typicode.com/eyesofkids/json-fake-data/products/' +
-      pid
+    const url = 'http://localhost:3005/api/my-products/' + pid
 
     // 使用try-catch陳述式，讓和伺服器連線程式作錯誤處理
     try {
       const res = await fetch(url)
-      const data = await res.json()
+      // product資料在data.data.product
+      const resData = await res.json()
 
-      //console.log(data)
+      if (resData.status === 'success') {
+        // 檢查是否為物件資料類型(基本保護)
+        if (resData.data.product.id) {
+          // 設定到狀態中 ===> 進入update階段，觸發重新渲染(re-render)
+          setProduct(resData.data.product)
 
-      // 檢查是否為物件資料類型(基本保護)
-      if (
-        typeof data === 'object' &&
-        data !== null &&
-        !Array.isArray(data) &&
-        data.id
-      ) {
-        // 設定到狀態中 ===> 進入update階段，觸發重新渲染(re-render)
-        setProduct(data)
-
-        // 關閉載入動畫，撥放1.5秒
-        setTimeout(() => {
-          setIsLoading(false)
-        }, 1500)
+          // 關閉載入動畫，撥放1.5秒
+          setTimeout(() => {
+            setIsLoading(false)
+          }, 1500)
+        }
       }
     } catch (e) {
       console.error(e)

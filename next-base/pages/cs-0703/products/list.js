@@ -24,20 +24,19 @@ export default function List() {
 
   // 與伺服器作fetch獲得資料(建議寫在useEffect上面與外面比較容易維護管理)
   const getProducts = async () => {
-    const url =
-      'https://my-json-server.typicode.com/eyesofkids/json-fake-data/products'
+    const url = 'http://localhost:3005/api/my-products'
 
     // 使用try-catch陳述式，讓和伺服器連線程式作錯誤處理
     try {
       const res = await fetch(url)
-      const data = await res.json()
+      const resData = await res.json()
 
-      //console.log(data)
-
-      // 檢查是否為陣列資料類型(基本保護)
-      if (Array.isArray(data)) {
-        // 設定到狀態中 ===> 進入update階段，觸發重新渲染(re-render)
-        setProducts(data)
+      if (resData.status === 'success') {
+        // 檢查是否為陣列資料類型(基本保護)
+        if (Array.isArray(resData.data.products)) {
+          // 設定到狀態中 ===> 進入update階段，觸發重新渲染(re-render)
+          setProducts(resData.data.products)
+        }
       }
     } catch (e) {
       console.error(e)
